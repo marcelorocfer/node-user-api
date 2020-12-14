@@ -39,6 +39,25 @@ class UserController {
             res.json({error: "O e-mail é inválido!"});
         }
     }
+
+    async edit(req, res) {
+
+        let { id, email, name, role } = req.body;
+        let result = await User.update(id, email, name, role);
+
+        if(result !== undefined) {
+            if(result.status) {
+                res.status(200);
+                res.send("Ok!");
+            } else {
+                res.status(406);
+                res.send(result.error);
+            }
+        } else {
+            res.status(406);
+            res.send("Ocorreu um erro no servidor!");
+        }
+    }
 }
 
 module.exports = new UserController();

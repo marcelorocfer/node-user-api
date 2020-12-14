@@ -26,7 +26,7 @@ class User {
         }
     }
 
-    static async new(email, name, password) {
+    async new(email, name, password) {
         try {
             let hash = await bcrypt.hash(password, 10);
             await knex.insert({ email, name, password: hash, role: 0 }).table("users");
@@ -35,13 +35,54 @@ class User {
         }
     }
 
-    static async findEmail(email) {
+    async findEmail(email) {
         try {
             let result = await knex.select("*").from("users").where({ email });
             return result.length > 0;
         } catch(e) {
             console.log(e);
             return false;
+        }
+    }
+
+    async update(id, email, name, role) {
+
+        let user = await this.findById(id);
+
+        if(user !== undefined) {
+
+            let editUser = {};
+            
+            if(email !== undefined && email !== user.email) {
+
+                let result = await this.findEmail(email);
+
+                if(!result) {
+                    editUser.email = email;
+                } else {
+                    return { status: false, error: "O e-mail já está cadastrado!"};
+                }
+            }
+
+            if(name !== undefined) {
+                editUser.name = name;
+            }
+
+            if(role !== undefined) {
+                editUser.role = role;
+            }
+
+            try {
+
+                await knex.update(editUser).where({ id }).table("users");
+                return { status: true };
+
+            } catch(error) {
+                return { status: false, error };
+            }
+
+        } else {
+            return { status: false, error: "O usuário não existe!"};
         }
     }
 
