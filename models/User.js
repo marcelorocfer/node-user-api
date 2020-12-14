@@ -14,7 +14,21 @@ class User {
 
     async findById(id) {
         try {
-            let result = await knex.select(["id", "name", "email", "role"]).where({id}).table("users");
+            let result = await knex.select(["id", "name", "email", "role"]).where({ id }).table("users");
+            if(result.length > 0) {
+                return result[0];
+            } else {
+                return undefined;
+            }
+        } catch(e) {
+            console.log(e);
+            return undefined;
+        }
+    }
+
+    async findByEmail(email) {
+        try {
+            let result = await knex.select(["id", "name", "email", "role"]).where({ email }).table("users");
             if(result.length > 0) {
                 return result[0];
             } else {
