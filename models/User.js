@@ -86,6 +86,19 @@ class User {
         }
     }
 
+    async delete(id) {
+        let user = await this.findById(id);
+        if(user !== undefined) {
+            try {
+                await knex.delete().where({ id }).table("users");
+                return { status: true };
+            } catch(error) {
+                return { status: false, error };
+            }
+        } else {
+            return { status: false, error: "O usuário não existe, portanto não pode ser deletado!" };
+        }
+    }
 }
 
 module.exports = new User();
