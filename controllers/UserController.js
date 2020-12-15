@@ -3,7 +3,7 @@ const PasswordToken = require("../models/PasswordToken");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-let secret = "3ad54g3ravf45v5fdsadvredsf";
+const secret = "ahilÇHWdiuawg64SD4V65D4SDhdASLGAHJSCJHC2565625";
 
 class UserController {
 
@@ -83,8 +83,6 @@ class UserController {
         if(result.status) {
             res.status(200);
             res.send(String(result.token));
-            // console.log(result.token);
-            // NodeMailer.send(token);
         } else {
             res.status(406);
             res.send(result.error);

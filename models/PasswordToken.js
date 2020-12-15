@@ -3,7 +3,7 @@ const User = require("./User");
 
 class PasswordToken {
     async create(email) {
-        let user =  await User.findByEmail(email);
+        let user = await User.findByEmail(email);
         if(user !== undefined) {
             try {
                 let token = Date.now();
